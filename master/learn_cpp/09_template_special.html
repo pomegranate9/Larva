@@ -1,0 +1,1154 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="小糖不想吃糖了 - 关注深度学习、C++、嵌入式">
+      
+      
+      
+      
+        <link rel="canonical" href="https://www.ttlarval.org/master/learn_cpp/09_template_special.html">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
+    
+    
+      
+        <title>模板特例 - TTLarva</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.3754935a.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#02a6f2">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="light-blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="TTLarva" class="md-header__button md-logo" aria-label="TTLarva" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TTLarva
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              模板特例
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ttttLarva/Larva" title="前往 GitHub 仓库" class="md-source"
+  data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ttlarva
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      首页
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../github/01_how_to_pr.html" class="md-tabs__link">
+        一起学GitHub
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="01_rvalue_ref.html" class="md-tabs__link md-tabs__link--active">
+        研究 C++ 新语法
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../remote_cpp_development/remote_ssh.html" class="md-tabs__link">
+        C++ 开发工具集锦
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cuda_program/01_what_is_cuda.html" class="md-tabs__link">
+        学习 CUDA 编程
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cpython/CPython1.html" class="md-tabs__link">
+        CPython 源码解读
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="TTLarva" class="md-nav__button md-logo" aria-label="TTLarva" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    TTLarva
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ttttLarva/Larva" title="前往 GitHub 仓库" class="md-source"
+  data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ttlarva
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        首页
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        一起学GitHub
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="一起学GitHub" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          一起学GitHub
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/01_how_to_pr.html" class="md-nav__link">
+        如何提交 PR
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/02_learn_from_pr.html" class="md-nav__link">
+        如何通过 PR 学习
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/03_SSH_for_github.html" class="md-nav__link">
+        github SSH免密码登录设置
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/04_beauty_code.html" class="md-nav__link">
+        美化代码工具分享
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/05_get_started_with_Markdown.html" class="md-nav__link">
+        快速上手 Markdown
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/06_Mkdocs.html" class="md-nav__link">
+        MkDocs 工具使用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/07_GitHub_Pages.html" class="md-nav__link">
+        GitHub Pages 的生成和使用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/08_GitHub_Actions.html" class="md-nav__link">
+        GitHub Actions 介绍 & 使用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/09_merge_conflicts.html" class="md-nav__link">
+        解决 Git 冲突 Merge Conflicts
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../github/10_git_rebase.html" class="md-nav__link">
+        删除指定 commit 小妙招 git rebase
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        研究 C++ 新语法
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="研究 C++ 新语法" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          研究 C++ 新语法
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_rvalue_ref.html" class="md-nav__link">
+        右值引用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_forward.html" class="md-nav__link">
+        完美转发
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_varadic_template.html" class="md-nav__link">
+        可变参模板
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_singleton.html" class="md-nav__link">
+        单例模式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_using_against_typedef.html" class="md-nav__link">
+        类型别名：从 typedef 到 using
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_functor.html" class="md-nav__link">
+        仿函数
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="07_complie_link_macro.html" class="md-nav__link">
+        编译链接和宏本质
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_template.html" class="md-nav__link">
+        模板 template
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          模板特例
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="09_template_special.html" class="md-nav__link md-nav__link--active">
+        模板特例
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    泛型编程的特殊情况
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11_template_sfinae.html" class="md-nav__link">
+        搞懂 SFINAE
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="012_enable_if.html" class="md-nav__link">
+        enable_if 新标准
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="13_enable_if_redefine_mistake.html" class="md-nav__link">
+        enable_if 的重定义错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="014_materials.html" class="md-nav__link">
+        模板元编程
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        C++ 开发工具集锦
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="C++ 开发工具集锦" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          C++ 开发工具集锦
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote_cpp_development/remote_ssh.html" class="md-nav__link">
+        VS Code 插件 Remote SSH
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote_cpp_development/conda.html" class="md-nav__link">
+        使用包管理工具 Conda
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote_cpp_development/CMake.html" class="md-nav__link">
+        编译 C++ 项目必备 CMake
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote_cpp_development/Clangd.html" class="md-nav__link">
+        clangd 帮助打造 Linux 下完美 C++ IDE
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        学习 CUDA 编程
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="学习 CUDA 编程" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          学习 CUDA 编程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cuda_program/01_what_is_cuda.html" class="md-nav__link">
+        CUDA 是什么
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        CPython 源码解读
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="CPython 源码解读" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          CPython 源码解读
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpython/CPython1.html" class="md-nav__link">
+        认识 CPython 源码结构并且编程
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    泛型编程的特殊情况
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ttttLarva/Larva/blob/master/docs/learn_cpp/09_template_special.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="_1">模板特例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p><img alt="🌏" class="twemoji" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f30f.svg" title=":earth_asia:" /> <strong>Bilibili视频传送门：</strong> <a href="https://www.bilibili.com/video/BV1ea411v7Xa?spm_id_from=333.999.0.0">C++新标准009_模板特例</a> <img alt="🌏" class="twemoji" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f30f.svg" title=":earth_asia:" /></p>
+<p><a href="08_template.html">上一篇文章</a>我们了解了模版，在此基础上，我们这期谈谈模板特例，包括三个主要内容：</p>
+<ul>
+<li>泛型编程的特殊情况</li>
+<li>偏特化</li>
+<li>特化的应用</li>
+</ul>
+<h2 id="_2">泛型编程的特殊情况<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>我们还是使用原来写过的 MYMAX 代码来作为例子：</p>
+<p>```C++</p>
+<h1 id="include">include <stdio.h><a class="headerlink" href="#include" title="Permanent link">&para;</a></h1>
+<h1 id="include_1">include <type_traits><a class="headerlink" href="#include_1" title="Permanent link">&para;</a></h1>
+<h1 id="include_2">include <string.h><a class="headerlink" href="#include_2" title="Permanent link">&para;</a></h1>
+<p>template <typename T>
+T MYMAX(T x , T y){
+    static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+    "T must be  integral or floating point");
+    return x&lt;y ? y : x;
+}</p>
+<p>int main(int argc, char* argv[])
+{
+    printf("%d\n", MYMAX<int>(10, 5));
+    printf("%1f\n", MYMAX<double>(3.14, 2.73));
+    printf("%s\n", MYMAX("short string", "very very long string"));
+    return 0;
+}
+```</p>
+<p>原来的代码做了静态检查，遇到输入是字符串时可以达到编译时就报错。这种做法其实是回避问题而不是解决问题，因此我们可以使用模版特例来解决：</p>
+<p>```c++
+template <typename T>
+T MYMAX(T x , T y){
+    static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+    "T must be  integral or floating point");
+    return x&lt;y ? y : x;
+}</p>
+<p>template &lt;&gt;
+const char* MYMAX(const char* x , const char* y){
+    if (strlen(x) &lt; strlen(y)) {
+      return y;
+    }
+    else {
+      return x;
+    }
+}
+```</p>
+<p>这里我们增加了一个模版特化的 <code>MYMAX</code>，有 <code>template</code> 关键字，但是没有参数。这个函数仅仅只针对 <code>const char*</code> 类型生效，函数内部的实现也是专门针对字符串的。其实就是针对某些模版参数进行了特化，编译器在实例化模版的过程中，会优先选择特化的模版，那模版特化的优点也是很明显的了。首先，从功能上来说，有类似虚函数那样“多态”的效果，我们对不同的数据调用的都是 <code>MYMAX</code>，但是会自动选择不同的处理逻辑。其次，模版特化的性能更优，虚函数依赖的是运行时刷新虚表、查询虚表，而模板特化在编译时就完成了“分支的选择”，不占用运行时的资源，因此一般来说它的性能更优。 </p>
+<h2 id="_3">偏特化<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>刚刚写的模版特化，<code>template</code> 括号中是没有任何模版参数的，这种情况被称为“全特化”，其表示所有的模版参数都被特别指定了。与之对应的，对于类模版而言还有“偏特化”，表示只用特化部分模版参数。</p>
+<p>```c++</p>
+<h1 id="include_3">include <iostream><a class="headerlink" href="#include_3" title="Permanent link">&para;</a></h1>
+<p>using namespace std;</p>
+<p>enum class DEVICE {
+  CPU,
+  GPU
+};</p>
+<p>template <DEVICE dev, typename IN_T1, typename IN_T2>
+struct CExample {
+  void operator()(IN_T1 a, IN_T2 b);
+};</p>
+<p>template <typename IN_T1, typename IN_T2>
+struct CExample<DEVICE::CPU, IN_T1, IN_T2> {
+  void operator()(IN_T1 a, IN_T2 b) {
+    cout &lt;&lt; "CPU template for: " &lt;&lt; a &lt;&lt; " " &lt;&lt; b &lt;&lt; endl;
+  }
+};</p>
+<p>template <typename IN_T1, typename IN_T2>
+struct CExample<DEVICE::GPU, IN_T1, IN_T2> {
+  void operator()(IN_T1 a, IN_T2 b) {
+    cout &lt;&lt; "GPU template for: " &lt;&lt; a &lt;&lt; " " &lt;&lt; b &lt;&lt; endl;
+  }
+};</p>
+<p>int main() {
+  CExample<DEVICE::CPU, double, double>()(1.5, 2.4);
+  CExample<DEVICE::GPU, int, int>()(4, 2);
+  return 0;
+}
+```</p>
+<p>这里实现了一个 <code>CExample</code> 的模版类，其有三个模版参数。然后我们实现两个模版类，分别对 <code>CPU</code> 和 <code>GPU</code> 的 <code>DEVICE</code> 进行偏特化。可以看到针对给定的不同“设备类型”，我们调用时使用的都是统一的接口，但是却触发了完全不同的运行流程。</p>
+<h2 id="_4">特化的应用<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>通过上面的介绍，我们了解了模版的全特化和偏特化，接下来我们就从知名开源软件 PyTorch 和 OneFlow 来体会模版特化的用处。我们知道，工业级别的深度学习框架，无论是 PyTorch 还是 OneFlow，都要去适配多种硬件，最常见的就是适配 GPU 和 CPU。</p>
+<h3 id="pytorch">PyTorch 的适配风格<a class="headerlink" href="#pytorch" title="Permanent link">&para;</a></h3>
+<p>PyTorch 一般会针对 CPU 和 GPU 分别写一套独立的代码，接下来我们就以 PyTorch 的<code>eye</code>算子为例看看。它的 CPU 版本的实现放在 <a href="https://github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/TensorFactories.cpp#L434">eye_out_cpu</a> 中。</p>
+<p>```c++
+result.resize_({n, m});
+result.zero_();</p>
+<p>int64_t sz = std::min<int64_t>(n, m);
+AT_DISPATCH_ALL_TYPES_AND_COMPLEX_AND2(at::ScalarType::Half, at::ScalarType::Bool, result.scalar_type(), "eye", <a href="">&amp;</a> -&gt; void {
+  scalar_t* result_data = result.data_ptr<scalar_t>();
+  at::parallel_for(0, sz, internal::GRAIN_SIZE, <a href="int64_t p_begin, int64_t p_end">&amp;</a> {
+    for (const auto i : c10::irange(p_begin, p_end))
+      result_data[i*(result.strides()[0] + result.stride()[1])] = 1;
+  });
+});
+```</p>
+<p>上面是 CPU 版本的 <code>eye</code> 算子实现，而在 GPU 版本中，其实现在<a href="https://github.com/pytorch/pytorch/blob/master/aten/src/ATen/native/cuda/TensorFactories.cu#L39">eye_out_gpu</a>中。</p>
+<p>```c++
+result.resize_({n, m});
+result.zero_();</p>
+<p>int64_t sz = std::min<int64_t>(n, m);
+int64_t stride = result.stride(0) + result.stride(1);</p>
+<p>Tensor diag = result.as_strided({sz}, {stride});
+diag.fill_(1);
+```</p>
+<p>PyTorch 这种风格为每一种硬件都写一套 <code>kernel</code>，这样代码清爽简洁，更容易让人看懂，但是可能会产生比较多的重复代码。</p>
+<h3 id="oneflow">OneFlow 的适配风格<a class="headerlink" href="#oneflow" title="Permanent link">&para;</a></h3>
+<p>OneFlow 中就运用了模版特例等技巧，把在适配硬件过程中可能会重复的代码降低到最少。</p>
+<p>不管是 CPU 还是 GPU，用的都是下面同一份代码，即 <code>SetOneInDiag</code> 函数，其声明在 <a href="https://github.com/Oneflow-Inc/oneflow/blob/master/oneflow/user/kernels/eye_kernel_util.h">eye_kernel_util.h</a>。</p>
+<p><code>c++
+template&lt;typename T&gt;
+OF_DEVICE_FUNC void SetOneInDiag(const int64_t cols, const int64_t rows, T* out) {
+  const T one = static_cast&lt;T&gt;(1);
+  XPU_1D_KERNEL_LOOP(i, rows) {
+    const int64_t index = i * cols + i;
+    out[index] = one;
+  }
+}</code></p>
+<p>而不同设备的入口也是统一的，就是下面的 <code>EyeFunctor</code> 括号运算符重载函数，实现在 <a href="https://github.com/Oneflow-Inc/oneflow/blob/master/oneflow/user/kernels/eye_kernel.cpp">eye_kernel.cpp</a>。</p>
+<p><code>c++
+void Compute(user_op::KernelComputeContext* ctx) const override {
+    int64_t rows = ctx-&gt;Attr&lt;int64_t&gt;("rows");
+    int64_t cols = ctx-&gt;Attr&lt;int64_t&gt;("cols");
+    if (rows == 0 || cols == 0) { return; }
+    Tensor* out_tensor = ctx-&gt;Tensor4ArgNameAndIndex("out", 0);
+    T* out = out_tensor-&gt;mut_dptr&lt;T&gt;();
+    Memset&lt;device_type&gt;(
+        ctx-&gt;stream(), out_tensor-&gt;mut_dptr&lt;T&gt;(), 0,
+        out_tensor-&gt;shape().elem_cnt() * GetSizeOfDataType(out_tensor-&gt;data_type()));
+    EyeFunctor&lt;device_type, T&gt;()(ctx-&gt;stream(), cols, std::min(cols, rows), out);
+  }</code></p>
+<p>OneFlow 针对不同的设备做了特化，把那些无法统一的代码都放到了特化的模版里。</p>
+<p>比如 CPU 版本的 <code>EyeFunctor</code>，直接调用了 <code>SetOneInDiag</code> 函数，其实现在 <a href="https://github.com/Oneflow-Inc/oneflow/blob/master/oneflow/user/kernels/eye_kernel_util.cpp">eye_kernel_util.cpp</a>。</p>
+<p><code>c++
+template&lt;typename T&gt;
+struct EyeFunctor&lt;DeviceType::kCPU, T&gt; final {
+  void operator()(ep::Stream* stream, const int64_t&amp; cols, const int64_t&amp; rows, T* out) {
+    SetOneInDiag(cols, rows, out);
+  }
+};</code></p>
+<p>而 GPU 版本的 <code>EyeFunctor</code>，要实现 <code>global</code> 函数，并启动 <code>kernel</code>，其实现在 <a href="https://github.com/Oneflow-Inc/oneflow/blob/master/oneflow/user/kernels/eye_kernel_util.cu">eye_kernel_util.cu</a>。</p>
+<p>```c++
+template<typename T>
+<strong>global</strong> void EyeForwardGpuKernel(const int64_t cols, const int64_t rows, T* out) {
+  SetOneInDiag(cols, rows, out);
+}</p>
+<p>template<typename T>
+struct EyeFunctor<DeviceType::kCUDA, T> final {
+  void operator()(ep::Stream* stream, const int64_t&amp; cols, const int64_t&amp; rows, T* out) {
+    RUN_CUDA_KERNEL((EyeForwardGpuKernel<T>), stream, rows, cols, rows, out);
+  }
+};
+```</p>
+<p>OneFlow 这种风格代码更精炼，冗余度也更低，但是对 C++ 的要求也更高。</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="08_template.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: 模板 template" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              模板 template
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="11_template_sfinae.html" class="md-footer__link md-footer__link--next" aria-label="下一页: 搞懂 SFINAE" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              搞懂 SFINAE
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; All Reserved
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.top"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ddd52ceb.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
